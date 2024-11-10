@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Planning Service</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>Event Planning Service</h1>
+            <nav>
+                <ul>
+                    <li><a href="#budget-calculator">Budget Calculator</a></li>
+                    <li><a href="#contact-form">Book a Consultation</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Budget Calculator Section -->
+    <section id="budget-calculator" class="section">
+        <div class="container">
+            <h2>Budget Calculator</h2>
+            <form id="budgetForm">
+                <label for="eventType">Event Type:</label>
+                <select id="eventType" name="eventType" required>
+                    <option value="wedding">Wedding</option>
+                    <option value="corporate">Corporate Event</option>
+                    <option value="party">Party</option>
+                </select>
+                
+                <label for="guestCount">Number of Guests:</label>
+                <input type="number" id="guestCount" name="guestCount" min="1" required>
+                
+                <label for="venueCost">Venue Cost ($):</label>
+                <input type="number" id="venueCost" name="venueCost" min="0" step="0.01" required>
+                
+                <label for="cateringCost">Catering Cost ($):</label>
+                <input type="number" id="cateringCost" name="cateringCost" min="0" step="0.01" required>
+                
+                <button type="submit">Calculate Budget</button>
+            </form>
+
+            <h3 id="totalCostTitle" style="display: none;">Estimated Budget:</h3>
+            <p id="totalCost">$0</p>
+        </div>
+    </section>
+
+    <!-- Consultation Booking Form -->
+    <section id="contact-form" class="section">
+        <div class="container">
+            <h2>Book a Consultation</h2>
+            <form id="consultationForm">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="eventDetails">Event Details:</label>
+                <textarea id="eventDetails" name="eventDetails" rows="4" required></textarea>
+
+                <button type="submit">Schedule Consultation</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Event Planning Service. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Budget Calculator Logic
+            document.getElementById('budgetForm').addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent the form from submitting and refreshing the page
+
+                const eventType = document.getElementById('eventType').value;
+                const guestCount = parseInt(document.getElementById('guestCount').value);
+                const venueCost = parseFloat(document.getElementById('venueCost').value);
+                const cateringCost = parseFloat(document.getElementById('cateringCost').value);
+
+                let totalCost = venueCost + cateringCost;
+
+                // Add additional charges based on event type
+                if (eventType === 'wedding') {
+                    totalCost += 1000; // Wedding extra costs
+                } else if (eventType === 'corporate') {
+                    totalCost += 500; // Corporate extra costs
+                }
+
+                // Add per guest cost
+                totalCost += guestCount * 50;
+
+                // Display the total cost
+                document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
+                document.getElementById('totalCostTitle').style.display = 'block';
+            });
+
+            // Contact Form Submission Logic
+            document.getElementById('consultationForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const name = document.getElementById('name').value;
+                
+                alert(`Thank you, ${name}! Your consultation request has been submitted.`);
+                
+                // Clear the form
+                document.getElementById('consultationForm').reset();
+            });
+        });
+    </script>
+</body>
+</html>
